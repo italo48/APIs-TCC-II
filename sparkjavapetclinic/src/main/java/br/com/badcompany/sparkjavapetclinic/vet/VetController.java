@@ -1,30 +1,15 @@
 package br.com.badcompany.sparkjavapetclinic.vet;
 
-class VetController {
+import static br.com.badcompany.sparkjavapetclinic.App.vetDao;
 
-//    private final VetRepository vets;
-//
-//    public VetController(VetRepository clinicService) {
-//        this.vets = clinicService;
-//    }
-//
-//    @GetMapping("/vets.html")
-//    public String showVetList(Map<String, Object> model) {
-//        // Here we are returning an object of type 'Vets' rather than a collection of Vet
-//        // objects so it is simpler for Object-Xml mapping
-//        Vets vets = new Vets();
-//        vets.getVetList().addAll(this.vets.findAll());
-//        model.put("vets", vets);
-//        return "vets/vetList";
-//    }
-//
-//    @GetMapping({ "/vets" })
-//    public @ResponseBody Vets showResourcesVetList() {
-//        // Here we are returning an object of type 'Vets' rather than a collection of Vet
-//        // objects so it is simpler for JSon/Object mapping
-//        Vets vets = new Vets();
-//        vets.getVetList().addAll(this.vets.findAll());
-//        return vets;
-//    }
+import spark.Request;
+import spark.Response;
+import spark.Route;
 
+public class VetController {
+	public static Route getAllVetsEndPoint = (Request req, Response res) -> {
+		res.type("application/json");
+		res.status(200);
+		return vetDao.getAllVets();
+	};
 }

@@ -5,9 +5,10 @@ import static br.com.badcompany.sparkjavapetclinic.App.ownerDao;
 
 import com.google.gson.JsonSyntaxException;
 
+import br.com.badcompany.sparkjavapetclinic.util.MessageJson;
 import spark.Request;
 import spark.Response;
-import spark.Route; 
+import spark.Route;
 
 public class OwnerController {
 	public static Route addOwnerEndPoint = (Request req, Response res) -> {
@@ -17,18 +18,28 @@ public class OwnerController {
 			res.status(200);
 		} catch (JsonSyntaxException a) {
 			a.printStackTrace();
-			res.status(500);
-			return "Yo, your json is wrong";
+			res.status(400);
+			return new MessageJson("Yo, your json is wrong");
 		}
-		return "Success";
+		return new MessageJson("Success");
 	};
-	
+
 	public static Route listOwnersEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
 		res.status(200);
-		return ownerDao.owners;
+		return ownerDao.getAllOwners();
 	};
-	
+
+	public static Route searchOwnerEndPoint = (Request req, Response res) -> {
+		Owner finded = ownerDao.findOneOwner(req.params(":name"));
+		res.type("application/json");
+		if (finded == null) {
+			res.status(404);
+			return new MessageJson("Owner not exists");
+		}
+		return finded;
+	};
+
 //    private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 //    private final OwnerRepository owners;
 //    private VisitRepository visits;

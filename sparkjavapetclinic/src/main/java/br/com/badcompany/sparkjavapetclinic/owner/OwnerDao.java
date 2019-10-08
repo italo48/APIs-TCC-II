@@ -1,29 +1,38 @@
 package br.com.badcompany.sparkjavapetclinic.owner;
 
+import static br.com.badcompany.sparkjavapetclinic.App.entityManagerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
+import javax.persistence.EntityManager; 
 public class OwnerDao {
-	List<Owner> owners = new ArrayList<>();
-//	private Session sess;
+	private EntityManager entityManager;
+
 	public void saveOwner(Owner owner) {
-		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Owners-PU");
-		EntityManager em = emf.createEntityManager();
-		
-		em.getTransaction().begin();
-		em.persist(owner);
-		em.getTransaction().commit();
-		
-		em.close();
-		emf.close();
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		entityManager.merge(owner);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 	}
-	
-	public List<Owner> getOwners() {
-		return this.owners;
+
+	public List<Owner> getAllOwners() {
+		List<Owner> owners = new ArrayList<>();
+		int id = 1;
+		entityManager = entityManagerFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+		while (entityManager.find(Owner.class, id) != null) {
+			owners.add(entityManager.find(Owner.class, id));
+			id++;
+		}
+		entityManager.getTransaction().commit();
+		entityManager.close();
+		return owners;
+	}
+
+	public Owner findOneOwner(String name) {
+		return getAllOwners().stream().filter(owner -> owner.getLastName().equals(name))
+				.findFirst().orElse(null);
 	}
 }

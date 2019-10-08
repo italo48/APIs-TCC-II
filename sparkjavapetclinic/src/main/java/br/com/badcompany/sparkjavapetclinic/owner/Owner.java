@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
@@ -35,6 +36,11 @@ import br.com.badcompany.sparkjavapetclinic.model.Person;
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "address")
 	@NotEmpty
 	private String address;
@@ -48,7 +54,7 @@ public class Owner extends Person {
 	@Digits(fraction = 0, integer = 10)
 	private String telephone;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
 	private Set<Pet> pets;
 
 	public String getAddress() {

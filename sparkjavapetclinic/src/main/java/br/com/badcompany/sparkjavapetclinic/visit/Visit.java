@@ -35,7 +35,12 @@ import br.com.badcompany.sparkjavapetclinic.model.BaseEntity;
 @Table(name = "visits")
 public class Visit extends BaseEntity {
 
-    @Column(name = "visit_date")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Column(name = "visit_date")
     private LocalDate date;
 
     @NotEmpty

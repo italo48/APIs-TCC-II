@@ -1,12 +1,14 @@
 package br.com.badcompany.sparkjavapetclinic.system;
 
+import br.com.badcompany.sparkjavapetclinic.util.MessageJson;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 public class ErrorController {
-	public static Route notFoundErrorHandler = (Request req, Response res) -> {
+	public static Route ooopsEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
-		return "Yo, there is something wrong there";
+		res.status(418);
+		return new MessageJson("The server refuses an attempt at thick coffee in the teapot.");
 	};
 }

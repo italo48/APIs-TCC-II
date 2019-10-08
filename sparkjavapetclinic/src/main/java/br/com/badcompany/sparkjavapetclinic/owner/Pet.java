@@ -45,6 +45,11 @@ import br.com.badcompany.sparkjavapetclinic.visit.Visit;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
 

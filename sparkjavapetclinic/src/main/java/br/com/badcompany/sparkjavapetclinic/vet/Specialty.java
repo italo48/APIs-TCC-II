@@ -31,4 +31,9 @@ import br.com.badcompany.sparkjavapetclinic.model.NamedEntity;
 @Table(name = "specialties")
 public class Specialty extends NamedEntity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 }

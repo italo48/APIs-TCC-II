@@ -4,44 +4,34 @@ import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import com.google.gson.Gson;
 
-import br.com.badcompany.sparkjavapetclinic.db.DBConnection;
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerController;
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerDao;
+import br.com.badcompany.sparkjavapetclinic.system.ErrorController;
 import br.com.badcompany.sparkjavapetclinic.system.WelcomeController;
+import br.com.badcompany.sparkjavapetclinic.vet.VetController;
+import br.com.badcompany.sparkjavapetclinic.vet.VetDao;
 
 public class App {
 //	Declare deps
-	public static DBConnection conn;
-	public static OwnerDao ownerDao;
+	public static EntityManagerFactory entityManagerFactory;
 	public static Gson gson;
+	
+	public static OwnerDao ownerDao;
+	public static VetDao vetDao;
+	
 	public static void main(String[] args) {
 		
 //		Instatiate deps
+		entityManagerFactory = Persistence.createEntityManagerFactory("Petclinic-PU");
 		gson = new Gson();
-		ownerDao = new OwnerDao();
-		conn = new DBConnection();
 		
-//		Test
-//		Owner a = new Owner();
-//		a.setAddress("Rua A, 412");
-//		a.setCity("Cidade A");
-//		a.setFirstName("Ítalo");
-//		a.setId(1);
-//		a.setLastName("Costa");
-//		a.setTelephone("98092834");
-//		
-//		Owner b = new Owner();
-//		b.setAddress("Rua B, 412");
-//		b.setCity("Cidade B");
-//		b.setFirstName("Lincoln");
-//		b.setId(2);
-//		b.setLastName("Oliveira");
-//		b.setTelephone("2394090");
-//		
-//		ownerDao.getOwners().add(a);
-//		ownerDao.getOwners().add(b);
+		ownerDao = new OwnerDao();
+		vetDao = new VetDao();
 		
 //		config SparkJava
 		port(8081);
@@ -50,14 +40,19 @@ public class App {
 //		Error
 //		Welcome
 		get("/", WelcomeController.welcomeEndPoint, gson::toJson);
-		get("/help", WelcomeController.helpEndPoint, gson::toJson);
+		get("/help/", WelcomeController.helpEndPoint, gson::toJson);
 		
 //		Owner
 		post("/saveOwner/", OwnerController.addOwnerEndPoint, gson::toJson);
 		get("/listOwners/", OwnerController.listOwnersEndPoint, gson::toJson);
+		get("/searchOwner/:name/", OwnerController.searchOwnerEndPoint, gson::toJson);
 		
 //		Vet
+		get("/listVets/", VetController.getAllVetsEndPoint, gson::toJson);
 		
 //		Visit
+		
+//		Error
+		get("/oops/", ErrorController.ooopsEndPoint, gson::toJson);
 	}
 }
