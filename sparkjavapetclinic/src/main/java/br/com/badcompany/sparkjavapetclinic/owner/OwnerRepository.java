@@ -3,10 +3,12 @@ package br.com.badcompany.sparkjavapetclinic.owner;
 import static br.com.badcompany.sparkjavapetclinic.App.entityManagerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.EntityManager; 
-public class OwnerDao {
+import javax.persistence.EntityManager;
+
+public class OwnerRepository {
 	private EntityManager entityManager;
 
 	public void saveOwner(Owner owner) {
@@ -17,7 +19,9 @@ public class OwnerDao {
 		entityManager.close();
 	}
 
-	public List<Owner> getAllOwners() {
+	public Collection<Owner> getAllOwners() {
+
+//		Mudar
 		List<Owner> owners = new ArrayList<>();
 		int id = 1;
 		entityManager = entityManagerFactory.createEntityManager();
@@ -31,8 +35,19 @@ public class OwnerDao {
 		return owners;
 	}
 
-	public Owner findOneOwner(String name) {
-		return getAllOwners().stream().filter(owner -> owner.getLastName().equals(name))
-				.findFirst().orElse(null);
+	public List<Owner> findOwnerByName(String name) {
+
+//		Mudar
+		List<Owner> owners = new ArrayList<>();
+		for (Owner o : getAllOwners()) {
+			if (o.getLastName().equals(name)) {
+				owners.add(o);
+			}
+		}
+		return owners;
+	}
+
+	public int getSizeOwners() {
+		return getAllOwners().size();
 	}
 }

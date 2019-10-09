@@ -1,6 +1,7 @@
 package br.com.badcompany.sparkjavapetclinic.system;
 
 import br.com.badcompany.sparkjavapetclinic.owner.Owner;
+import br.com.badcompany.sparkjavapetclinic.util.MessageJson;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -8,7 +9,7 @@ import spark.Route;
 public class WelcomeController {
 	public static Route welcomeEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
-		return "Hello, Mr ";
+		return new MessageJson("Hello!!");
 	};
 	
 	public static Route helpEndPoint = (Request req, Response res) -> {

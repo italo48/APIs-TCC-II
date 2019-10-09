@@ -10,19 +10,19 @@ import javax.persistence.Persistence;
 import com.google.gson.Gson;
 
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerController;
-import br.com.badcompany.sparkjavapetclinic.owner.OwnerDao;
+import br.com.badcompany.sparkjavapetclinic.owner.OwnerRepository;
 import br.com.badcompany.sparkjavapetclinic.system.ErrorController;
 import br.com.badcompany.sparkjavapetclinic.system.WelcomeController;
 import br.com.badcompany.sparkjavapetclinic.vet.VetController;
-import br.com.badcompany.sparkjavapetclinic.vet.VetDao;
+import br.com.badcompany.sparkjavapetclinic.vet.VetRepository;
 
 public class App {
 //	Declare deps
 	public static EntityManagerFactory entityManagerFactory;
 	public static Gson gson;
 	
-	public static OwnerDao ownerDao;
-	public static VetDao vetDao;
+	public static OwnerRepository ownerDao;
+	public static VetRepository vetDao;
 	
 	public static void main(String[] args) {
 		
@@ -30,14 +30,14 @@ public class App {
 		entityManagerFactory = Persistence.createEntityManagerFactory("Petclinic-PU");
 		gson = new Gson();
 		
-		ownerDao = new OwnerDao();
-		vetDao = new VetDao();
+		ownerDao = new OwnerRepository();
+		vetDao = new VetRepository();
 		
 //		config SparkJava
 		port(8081);
 
 //		Routes
-//		Error
+		
 //		Welcome
 		get("/", WelcomeController.welcomeEndPoint, gson::toJson);
 		get("/help/", WelcomeController.helpEndPoint, gson::toJson);

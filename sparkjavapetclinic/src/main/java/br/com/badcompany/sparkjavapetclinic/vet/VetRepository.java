@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-public class VetDao {
+public class VetRepository {
 	private EntityManager entityManager;
 	
 	public List<Vet> getAllVets() {

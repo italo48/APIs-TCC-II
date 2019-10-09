@@ -12,12 +12,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import br.com.badcompany.sparkjavapetclinic.owner.Owner;
-import br.com.badcompany.sparkjavapetclinic.owner.OwnerDao;
+import br.com.badcompany.sparkjavapetclinic.owner.OwnerRepository;
 
 public class OwnerDaoTest {
 	
 	@Mock
-	private OwnerDao ownerDao;
+	private OwnerRepository ownerDao;
 
 	@Before
 	public void setUp() {
