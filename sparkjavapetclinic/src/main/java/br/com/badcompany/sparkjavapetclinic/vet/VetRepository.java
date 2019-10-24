@@ -1,24 +1,20 @@
 package br.com.badcompany.sparkjavapetclinic.vet;
 
-import static br.com.badcompany.sparkjavapetclinic.App.entityManagerFactory;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import br.com.badcompany.sparkjavapetclinic.util.JPAUtils;
+
 public class VetRepository {
 	private EntityManager entityManager;
+	private List<Vet> vets;
 	
 	public List<Vet> getAllVets() {
-		List<Vet> vets = new ArrayList<>();
-		int id = 1;
-		entityManager = entityManagerFactory.createEntityManager();
+//		Deixar igual a do owner
+		entityManager = JPAUtils.getEntityManager();
 		entityManager.getTransaction().begin();
-		while (entityManager.find(Vet.class, id) != null) {
-			vets.add(entityManager.find(Vet.class, id));
-			id++;
-		}
+		vets = entityManager.createQuery("from Vet", Vet.class).getResultList();
 		entityManager.getTransaction().commit();
 		entityManager.close();
 		return vets;

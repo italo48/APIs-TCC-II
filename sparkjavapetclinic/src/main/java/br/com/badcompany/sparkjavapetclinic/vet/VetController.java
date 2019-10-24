@@ -1,6 +1,6 @@
 package br.com.badcompany.sparkjavapetclinic.vet;
 
-import static br.com.badcompany.sparkjavapetclinic.App.vetDao;
+import static br.com.badcompany.sparkjavapetclinic.App.vetRepo;
 
 import spark.Request;
 import spark.Response;
@@ -10,6 +10,6 @@ public class VetController {
 	public static Route getAllVetsEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
 		res.status(200);
-		return vetDao.getAllVets();
+		return vetRepo.getAllVets();
 	};
 }

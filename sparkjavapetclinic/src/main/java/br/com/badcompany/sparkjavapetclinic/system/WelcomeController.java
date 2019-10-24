@@ -1,6 +1,7 @@
 package br.com.badcompany.sparkjavapetclinic.system;
 
-import br.com.badcompany.sparkjavapetclinic.owner.Owner;
+import br.com.badcompany.sparkjavapetclinic.owner.Pet;
+import br.com.badcompany.sparkjavapetclinic.owner.PetType;
 import br.com.badcompany.sparkjavapetclinic.util.MessageJson;
 import spark.Request;
 import spark.Response;
@@ -11,16 +12,13 @@ public class WelcomeController {
 		res.type("application/json");
 		return new MessageJson("Hello!!");
 	};
-	
+
 	public static Route helpEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
-		Owner o = new Owner();
-		o.setAddress("Rua A, 412");
-		o.setCity("Cidade A");
-		o.setFirstName("Ítalo");
-		o.setId(1);
-		o.setLastName("Costa");
-		o.setTelephone("98092834");
-		return o;
+		Pet p = new Pet();
+		p.setBirthDate(null);
+		p.setName("dadada");
+		p.setType(new PetType());
+		return p;
 	};
 }

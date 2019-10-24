@@ -3,56 +3,70 @@ package br.com.badcompany.sparkjavapetclinic;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import static spark.Spark.put;
 
 import com.google.gson.Gson;
 
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerController;
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerRepository;
+import br.com.badcompany.sparkjavapetclinic.owner.PetController;
+import br.com.badcompany.sparkjavapetclinic.owner.PetRepository;
 import br.com.badcompany.sparkjavapetclinic.system.ErrorController;
 import br.com.badcompany.sparkjavapetclinic.system.WelcomeController;
+import br.com.badcompany.sparkjavapetclinic.util.JPAUtils;
 import br.com.badcompany.sparkjavapetclinic.vet.VetController;
 import br.com.badcompany.sparkjavapetclinic.vet.VetRepository;
+import br.com.badcompany.sparkjavapetclinic.visit.VisitController;
+import br.com.badcompany.sparkjavapetclinic.visit.VisitRepository;
 
 public class App {
 //	Declare deps
-	public static EntityManagerFactory entityManagerFactory;
 	public static Gson gson;
-	
-	public static OwnerRepository ownerDao;
-	public static VetRepository vetDao;
-	
+	public static OwnerRepository ownerRepo;
+	public static VetRepository vetRepo;
+	public static PetRepository petRepo;
+	public static VisitRepository visitRepo;
+
 	public static void main(String[] args) {
-		
+
 //		Instatiate deps
-		entityManagerFactory = Persistence.createEntityManagerFactory("Petclinic-PU");
+		JPAUtils.initEmf();
 		gson = new Gson();
-		
-		ownerDao = new OwnerRepository();
-		vetDao = new VetRepository();
-		
+		ownerRepo = new OwnerRepository();
+		vetRepo = new VetRepository();
+		petRepo = new PetRepository();
+		visitRepo = new VisitRepository();
+
 //		config SparkJava
 		port(8081);
-
-//		Routes
 		
+		
+//		Routes
 //		Welcome
 		get("/", WelcomeController.welcomeEndPoint, gson::toJson);
 		get("/help/", WelcomeController.helpEndPoint, gson::toJson);
-		
+
 //		Owner
-		post("/saveOwner/", OwnerController.addOwnerEndPoint, gson::toJson);
-		get("/listOwners/", OwnerController.listOwnersEndPoint, gson::toJson);
-		get("/searchOwner/:name/", OwnerController.searchOwnerEndPoint, gson::toJson);
-		
+		post("/owner/saveOwner/", OwnerController.addOwnerEndPoint, gson::toJson);
+		get("/owner/listOwners/", OwnerController.listOwnersEndPoint, gson::toJson);
+		get("/owner/searchOwner/:name/", OwnerController.searchOwnerEndPoint, gson::toJson);
+		put("/owner/updateOwner/", OwnerController.editOwnerEndPoint, gson::toJson);
+
 //		Vet
 		get("/listVets/", VetController.getAllVetsEndPoint, gson::toJson);
 		
+//		Pet
+		post("/pet/addPet/:idOwner/:idType/", PetController.addPetEndPoint, gson::toJson);
+		get("/pet/listPets/", PetController.listPetsEndPoint, gson::toJson);
+		get("/pet/listPetTypes/", PetController.typePetsEndPoint, gson::toJson);
+		put("/pet/updatePet/", PetController.updatePetEndPoint, gson::toJson);
+
 //		Visit
+		get("/visit/listVisit/", VisitController.listVisitEndPoint, gson::toJson);
+		post("/visit/addVisit/", VisitController.addVisitEndPoint, gson::toJson);
 		
+
 //		Error
-		get("/oops/", ErrorController.ooopsEndPoint, gson::toJson);
+		get("*", ErrorController.ooopsEndPoint, gson::toJson);
 	}
 }

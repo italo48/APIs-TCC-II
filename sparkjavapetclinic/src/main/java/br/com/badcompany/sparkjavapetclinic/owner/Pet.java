@@ -44,10 +44,6 @@ import br.com.badcompany.sparkjavapetclinic.visit.Visit;
 @Entity
 @Table(name = "pets")
 public class Pet extends NamedEntity {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "birth_date")
@@ -108,10 +104,4 @@ public class Pet extends NamedEntity {
 		getVisitsInternal().add(visit);
 		visit.setPetId(this.getId());
 	}
-
-	public boolean isNew() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

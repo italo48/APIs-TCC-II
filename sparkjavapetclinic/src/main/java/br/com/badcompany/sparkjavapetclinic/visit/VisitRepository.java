@@ -1,22 +1,40 @@
-/*
- * Copyright 2012-2019 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package br.com.badcompany.sparkjavapetclinic.visit;
+
+import static br.com.badcompany.sparkjavapetclinic.App.petRepo;
 
 import java.util.List;
 
-public interface VisitRepository {
-	List<Visit> findByPetId(Integer petId);
+import javax.persistence.EntityManager;
+
+import br.com.badcompany.sparkjavapetclinic.system.GenericException;
+import br.com.badcompany.sparkjavapetclinic.util.JPAUtils;
+
+public class VisitRepository {
+	private EntityManager entityManager;
+
+	public Visit saveVisit(Visit visit) throws GenericException {
+		if (petRepo.findPetById(visit.getPetId()) != null) {			
+			entityManager = JPAUtils.getEntityManager();
+			try {
+				JPAUtils.beginTransaction();
+				entityManager.persist(visit);
+				JPAUtils.commit();
+			} catch (Exception e) {
+				JPAUtils.rollback();
+				e.printStackTrace();
+			} finally {
+				JPAUtils.closeEntityManager();
+			}
+			return visit;
+		}
+		throw new GenericException("Something went wrong while saving the visit");
+	}
+
+	public List<Visit> getAllVisits() {
+		entityManager = JPAUtils.getEntityManager();
+		List<Visit> visits;
+		visits = entityManager.createQuery("from Visit", Visit.class).getResultList();
+		JPAUtils.closeEntityManager();
+		return visits;
+	}
 }

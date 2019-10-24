@@ -1,10 +1,9 @@
 package br.com.badcompany.sparkjavapetclinic.owner;
 
 import static br.com.badcompany.sparkjavapetclinic.App.gson;
-import static br.com.badcompany.sparkjavapetclinic.App.ownerDao;
+import static br.com.badcompany.sparkjavapetclinic.App.ownerRepo;
 
-import com.google.gson.JsonSyntaxException;
-
+import br.com.badcompany.sparkjavapetclinic.system.GenericException;
 import br.com.badcompany.sparkjavapetclinic.util.MessageJson;
 import spark.Request;
 import spark.Response;
@@ -13,29 +12,49 @@ import spark.Route;
 public class OwnerController {
 	public static Route addOwnerEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
-		try {
-			ownerDao.saveOwner(gson.fromJson(req.body(), Owner.class));
-			res.status(200);
-		} catch (JsonSyntaxException a) {
-			a.printStackTrace();
-			res.status(400);
-			return new MessageJson("Yo, your json is wrong");
+		Owner o = gson.fromJson(req.body(), Owner.class);
+		if(o.getPets().size() == 0) {			
+			try {
+				ownerRepo.saveOwner(o);
+				res.status(200);
+			} catch(GenericException e) {
+				e.printStackTrace();
+				res.status(500);
+				return new MessageJson(e.getMessage());			
+			}
+			return o;
 		}
-		return new MessageJson("Success");
+		res.status(400);
+		return new MessageJson("Cannot register an owner with a pet");			
 	};
 
 	public static Route listOwnersEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
 		res.status(200);
-		return ownerDao.getAllOwners();
+//		Type t = new TypeToken<List<Owner>>() {}.getRawType();
+//		gson.toJson(ownerRepo.getAllOwners(), t);
+		
+		Owner o = new Owner();
+		Pet p = new Pet();
+		o.addPet(p);
+		return o;
+//		return ownerRepo.getAllOwners();
 	};
 
 	public static Route searchOwnerEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
-		if (ownerDao.getSizeOwners() == 0) {
+		
+		if (ownerRepo.findOwnerByName(req.params(":name")).size() == 0) {
 			res.status(404);
 			return new MessageJson("has not been found");
 		}
-		return ownerDao.findOwnerByName(req.params(":name"));
+		return ownerRepo.findOwnerByName(req.params(":name"));
+	};
+	
+	
+	public static Route editOwnerEndPoint = (Request req, Response res) -> {
+		res.type("application/json");
+		Owner newOwner = gson.fromJson(req.body(), Owner.class);
+		return ownerRepo.updateOwner(newOwner);
 	};
 }

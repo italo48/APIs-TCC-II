@@ -7,5 +7,9 @@ INSERT INTO specialties (name) VALUES ('surgery');
 INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (2, 2);
 
 INSERT INTO vets (first_name, last_name) VALUES ('Julio', 'Serafim');
-INSERT INTO specialties (name) VALUES ('none');
+INSERT INTO specialties (name) VALUES ('all');
 INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (3, 3);
+
+INSERT INTO vets (first_name, last_name) VALUES ('Dhulya', 'Brito');
+INSERT INTO specialties (name) VALUES ('all');
+INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (4, 3);

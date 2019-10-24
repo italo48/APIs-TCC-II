@@ -36,9 +36,6 @@ import br.com.badcompany.sparkjavapetclinic.model.Person;
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "address")
