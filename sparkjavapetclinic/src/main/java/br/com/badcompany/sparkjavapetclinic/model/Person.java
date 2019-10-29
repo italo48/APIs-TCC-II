@@ -3,18 +3,14 @@ package br.com.badcompany.sparkjavapetclinic.model;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 @MappedSuperclass
 public class Person extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "first_name")
-    @NotEmpty
     private String firstName;
 
     @Column(name = "last_name")
-    @NotEmpty
     private String lastName;
 
     public String getFirstName() {

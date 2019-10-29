@@ -16,7 +16,7 @@ public class OwnerRepository {
 			entityManager = JPAUtils.getEntityManager();
 			try {
 				JPAUtils.beginTransaction();
-				entityManager.persist(owner);
+				entityManager.merge(owner);
 				JPAUtils.commit();
 			} catch (Exception e) {
 				JPAUtils.rollback();
@@ -30,10 +30,10 @@ public class OwnerRepository {
 	}
 
 	public List<Owner> getAllOwners() {
-		entityManager = JPAUtils.getEntityManager();
 		List<Owner> owners;
+		entityManager = JPAUtils.getEntityManager();
 		owners = entityManager.createQuery("FROM Owner", Owner.class).getResultList();
-		JPAUtils.closeEntityManager();
+//		JPAUtils.closeEntityManager();
 		return owners;
 	}
 

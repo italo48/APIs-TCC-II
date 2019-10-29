@@ -1,6 +1,6 @@
 package br.com.badcompany.sparkjavapetclinic.vet;
 
-import static br.com.badcompany.sparkjavapetclinic.App.vetRepo;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.vetRepo;
 
 import spark.Request;
 import spark.Response;

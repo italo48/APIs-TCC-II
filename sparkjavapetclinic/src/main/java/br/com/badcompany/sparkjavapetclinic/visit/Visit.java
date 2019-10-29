@@ -21,8 +21,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import br.com.badcompany.sparkjavapetclinic.model.BaseEntity;
 
 /**
@@ -39,7 +37,6 @@ public class Visit extends BaseEntity {
 	@Column(name = "visit_date")
     private LocalDate date;
 
-    @NotEmpty
     @Column(name = "description")
     private String description;
 

@@ -1,7 +1,7 @@
 package br.com.badcompany.sparkjavapetclinic.owner;
 
-import static br.com.badcompany.sparkjavapetclinic.App.gson;
-import static br.com.badcompany.sparkjavapetclinic.App.ownerRepo;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.gson;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.ownerRepo;
 
 import br.com.badcompany.sparkjavapetclinic.system.GenericException;
 import br.com.badcompany.sparkjavapetclinic.util.MessageJson;
@@ -31,14 +31,7 @@ public class OwnerController {
 	public static Route listOwnersEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
 		res.status(200);
-//		Type t = new TypeToken<List<Owner>>() {}.getRawType();
-//		gson.toJson(ownerRepo.getAllOwners(), t);
-		
-		Owner o = new Owner();
-		Pet p = new Pet();
-		o.addPet(p);
-		return o;
-//		return ownerRepo.getAllOwners();
+		return ownerRepo.getAllOwners();
 	};
 
 	public static Route searchOwnerEndPoint = (Request req, Response res) -> {
@@ -46,15 +39,8 @@ public class OwnerController {
 		
 		if (ownerRepo.findOwnerByName(req.params(":name")).size() == 0) {
 			res.status(404);
-			return new MessageJson("has not been found");
+			return new MessageJson("Owner not found");
 		}
 		return ownerRepo.findOwnerByName(req.params(":name"));
-	};
-	
-	
-	public static Route editOwnerEndPoint = (Request req, Response res) -> {
-		res.type("application/json");
-		Owner newOwner = gson.fromJson(req.body(), Owner.class);
-		return ownerRepo.updateOwner(newOwner);
 	};
 }

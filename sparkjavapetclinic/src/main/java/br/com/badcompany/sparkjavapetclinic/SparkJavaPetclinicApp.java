@@ -5,7 +5,10 @@ import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerController;
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerRepository;
@@ -13,13 +16,14 @@ import br.com.badcompany.sparkjavapetclinic.owner.PetController;
 import br.com.badcompany.sparkjavapetclinic.owner.PetRepository;
 import br.com.badcompany.sparkjavapetclinic.system.ErrorController;
 import br.com.badcompany.sparkjavapetclinic.system.WelcomeController;
+import br.com.badcompany.sparkjavapetclinic.util.Exclusion;
 import br.com.badcompany.sparkjavapetclinic.util.JPAUtils;
 import br.com.badcompany.sparkjavapetclinic.vet.VetController;
 import br.com.badcompany.sparkjavapetclinic.vet.VetRepository;
 import br.com.badcompany.sparkjavapetclinic.visit.VisitController;
 import br.com.badcompany.sparkjavapetclinic.visit.VisitRepository;
 
-public class App {
+public class SparkJavaPetclinicApp {
 //	Declare deps
 	public static Gson gson;
 	public static OwnerRepository ownerRepo;
@@ -31,7 +35,22 @@ public class App {
 
 //		Instatiate deps
 		JPAUtils.initEmf();
-		gson = new Gson();
+
+		ExclusionStrategy strategy = new ExclusionStrategy() {
+		    @Override
+		    public boolean shouldSkipClass(Class<?> clazz) {
+		        return false;
+		    }
+		 
+		    @Override
+		    public boolean shouldSkipField(FieldAttributes field) {
+		        return field.getAnnotation(Exclusion.class) != null;
+		    }
+		};
+		
+		gson = new GsonBuilder()
+				.addSerializationExclusionStrategy(strategy)
+				.create();
 		ownerRepo = new OwnerRepository();
 		vetRepo = new VetRepository();
 		petRepo = new PetRepository();
@@ -39,7 +58,6 @@ public class App {
 
 //		config SparkJava
 		port(8081);
-		
 		
 //		Routes
 //		Welcome
@@ -50,7 +68,7 @@ public class App {
 		post("/owner/saveOwner/", OwnerController.addOwnerEndPoint, gson::toJson);
 		get("/owner/listOwners/", OwnerController.listOwnersEndPoint, gson::toJson);
 		get("/owner/searchOwner/:name/", OwnerController.searchOwnerEndPoint, gson::toJson);
-		put("/owner/updateOwner/", OwnerController.editOwnerEndPoint, gson::toJson);
+		put("/owner/updateOwner/", OwnerController.addOwnerEndPoint, gson::toJson);
 
 //		Vet
 		get("/listVets/", VetController.getAllVetsEndPoint, gson::toJson);

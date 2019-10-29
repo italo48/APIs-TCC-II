@@ -1,6 +1,6 @@
 package br.com.badcompany.sparkjavapetclinic.visit;
 
-import static br.com.badcompany.sparkjavapetclinic.App.petRepo;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.petRepo;
 
 import java.util.List;
 

@@ -1,7 +1,11 @@
 package br.com.badcompany.sparkjavapetclinic.owner;
 
-import static br.com.badcompany.sparkjavapetclinic.App.gson;
-import static br.com.badcompany.sparkjavapetclinic.App.petRepo;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.gson;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.petRepo;
+
+import java.time.LocalDate;
+
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.ownerRepo;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -12,15 +16,15 @@ import spark.Response;
 import spark.Route;
 
 public class PetController {
-//vou testa o final
 	public static final Route addPetEndPoint = (Request req, Response res) -> {
+		
 		res.type("application/json");
 		Pet p = gson.fromJson(req.body(), Pet.class);
 		
-		int  ownerId = Integer.parseInt(req.params(":idOwner"));
-		int typeId = Integer.parseInt(req.params(":idType")); 		
+		int idOwner = Integer.parseInt(req.params(":idOwner"));
+		int idTypePet = Integer.parseInt(req.params(":idType"));
 		try {
-			petRepo.savePet(ownerId, typeId, p);
+			petRepo.savePet(idOwner, idTypePet, p);
 			res.status(200);
 		} catch (JsonSyntaxException a) {
 			a.printStackTrace();
@@ -51,3 +55,4 @@ public class PetController {
 		return petRepo.getAllPetTypes();
 	};
 }
+;

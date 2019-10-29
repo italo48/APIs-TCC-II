@@ -1,7 +1,7 @@
 package br.com.badcompany.sparkjavapetclinic.visit;
 
-import static br.com.badcompany.sparkjavapetclinic.App.gson;
-import static br.com.badcompany.sparkjavapetclinic.App.visitRepo;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.gson;
+import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.visitRepo;
 
 import com.google.gson.JsonSyntaxException;
 
