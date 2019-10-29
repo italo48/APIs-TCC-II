@@ -14,11 +14,11 @@ import br.com.badcompany.sparkjavapetclinic.util.JPAUtils;
 public class PetRepository {
 	private EntityManager entityManager;
 
-	public Pet savePet(int idOwner, int idType, Pet pet) throws GenericException {
-		pet.setType(petRepo.findPetTypeById(idType));
+	public Pet savePet(int idOwner, Pet pet) throws GenericException {
+		pet.setType(petRepo.findPetTypeById(pet.getType().getId()));
 		Owner o = ownerRepo.findOwnerById(idOwner);
-		o.addPet(pet);
-		if (pet.getOwner() != null && pet.getType() != null) {
+		if (o.getPet(pet.getName()) == null) {
+			o.addPet(pet);
 			entityManager = JPAUtils.getEntityManager();
 			try {
 				JPAUtils.beginTransaction();
@@ -32,20 +32,14 @@ public class PetRepository {
 			}
 			return pet;
 		}
-		throw new GenericException("Something wrong happened to save the pet");
+		throw new GenericException("Pet name alredy exists");
 	}
 
-	public List<Pet> getAllPets() {
+	public Pet updatePet(int idOwner, Pet pet) throws GenericException {
+		pet.setType(petRepo.findPetTypeById(pet.getType().getId()));
+		Owner o = ownerRepo.findOwnerById(idOwner);
+		o.addPet(pet);
 		entityManager = JPAUtils.getEntityManager();
-		List<Pet> pets;
-		pets = entityManager.createQuery("FROM Pet", Pet.class).getResultList();
-//		JPAUtils.closeEntityManager();
-		return pets;
-	}
-
-	public Pet updatePet(Pet pet) {
-		entityManager = JPAUtils.getEntityManager();
-		System.out.println(entityManager.hashCode());
 		try {
 			JPAUtils.beginTransaction();
 			entityManager.merge(pet);
@@ -57,6 +51,14 @@ public class PetRepository {
 			JPAUtils.closeEntityManager();
 		}
 		return pet;
+	}
+
+	public List<Pet> getAllPets() {
+		entityManager = JPAUtils.getEntityManager();
+		List<Pet> pets;
+		pets = entityManager.createQuery("FROM Pet", Pet.class).getResultList();
+//		JPAUtils.closeEntityManager();
+		return pets;
 	}
 
 	public List<PetType> getAllPetTypes() {
@@ -82,7 +84,15 @@ public class PetRepository {
 		}
 		throw new GenericException("Pet not found");
 	}
-	
+
+	public boolean existsPetById(int idPet) {
+		for (Pet p : getAllPets()) {
+			if (p.getId() == idPet)
+				return true;
+		}
+		return false;
+	}
+
 	public PetType findPetTypeById(int id) throws GenericException {
 		for (PetType p : getAllPetTypes()) {
 			if (p.getId() == id)

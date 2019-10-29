@@ -33,9 +33,7 @@ public class SparkJavaPetclinicApp {
 
 	public static void main(String[] args) {
 
-//		Instatiate deps
-		JPAUtils.initEmf();
-
+//		Config Gson
 		ExclusionStrategy strategy = new ExclusionStrategy() {
 		    @Override
 		    public boolean shouldSkipClass(Class<?> clazz) {
@@ -48,6 +46,8 @@ public class SparkJavaPetclinicApp {
 		    }
 		};
 		
+//		Instatiate deps
+		JPAUtils.initEmf();
 		gson = new GsonBuilder()
 				.addSerializationExclusionStrategy(strategy)
 				.create();
@@ -74,13 +74,13 @@ public class SparkJavaPetclinicApp {
 		get("/listVets/", VetController.getAllVetsEndPoint, gson::toJson);
 		
 //		Pet
-		post("/pet/addPet/:idOwner/:idType/", PetController.addPetEndPoint, gson::toJson);
+		post("/pet/addPet/:idOwner/", PetController.addPetEndPoint, gson::toJson);
 		get("/pet/listPets/", PetController.listPetsEndPoint, gson::toJson);
 		get("/pet/listPetTypes/", PetController.typePetsEndPoint, gson::toJson);
-		put("/pet/updatePet/", PetController.updatePetEndPoint, gson::toJson);
+		put("/pet/updatePet/:idOwner/", PetController.updatePetEndPoint, gson::toJson);
 
 //		Visit
-		get("/visit/listVisit/", VisitController.listVisitEndPoint, gson::toJson);
+		get("/visit/listVisit/:idPet/", VisitController.listVisitEndPoint, gson::toJson);
 		post("/visit/addVisit/", VisitController.addVisitEndPoint, gson::toJson);
 		
 

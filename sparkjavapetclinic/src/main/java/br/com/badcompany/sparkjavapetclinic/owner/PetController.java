@@ -3,10 +3,6 @@ package br.com.badcompany.sparkjavapetclinic.owner;
 import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.gson;
 import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.petRepo;
 
-import java.time.LocalDate;
-
-import static br.com.badcompany.sparkjavapetclinic.SparkJavaPetclinicApp.ownerRepo;
-
 import com.google.gson.JsonSyntaxException;
 
 import br.com.badcompany.sparkjavapetclinic.system.GenericException;
@@ -22,9 +18,8 @@ public class PetController {
 		Pet p = gson.fromJson(req.body(), Pet.class);
 		
 		int idOwner = Integer.parseInt(req.params(":idOwner"));
-		int idTypePet = Integer.parseInt(req.params(":idType"));
 		try {
-			petRepo.savePet(idOwner, idTypePet, p);
+			petRepo.savePet(idOwner, p);
 			res.status(200);
 		} catch (JsonSyntaxException a) {
 			a.printStackTrace();
@@ -41,12 +36,14 @@ public class PetController {
 	public static final Route listPetsEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
 		res.status(200);
+		
 		return petRepo.getAllPets();
 	};
 	public static final Route updatePetEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
 		Pet newPet = gson.fromJson(req.body(), Pet.class);
-		return petRepo.updatePet(newPet);
+		int idOwner = Integer.parseInt(req.params(":idOwner"));
+		return petRepo.updatePet(idOwner, newPet);
 	};
 	
 	public static final Route typePetsEndPoint = (Request req, Response res) -> {

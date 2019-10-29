@@ -14,23 +14,30 @@ import spark.Route;
 public class VisitController {
 	public static final Route addVisitEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
+		Visit visit = gson.fromJson(req.body(), Visit.class);
 		try {
-			visitRepo.saveVisit(gson.fromJson(req.body(), Visit.class));
+			visitRepo.saveVisit(visit);
 			res.status(200);
 		} catch (JsonSyntaxException a) {
 			a.printStackTrace();
 			res.status(500);
 			return new MessageJson("Yo, your json is wrong");
 		} catch (GenericException e) {
-			res.status(500);
+			res.status(404);
 			return new MessageJson(e.getMessage());
 		}
-		return new MessageJson("Success");
+		return visit;
 	};
 	
 	public static final Route listVisitEndPoint = (Request req, Response res) -> {
 		res.type("application/json");
-		res.status(200);
-		return visitRepo.getAllVisits();
+		try {
+			res.status(200);
+			return visitRepo.getAllVisits(Integer.parseInt(req.params(":idPet")));
+		} catch (GenericException e) {
+			e.printStackTrace();
+			res.status(404);
+			return new MessageJson(e.getMessage()); 
+		}
 	};
 }
