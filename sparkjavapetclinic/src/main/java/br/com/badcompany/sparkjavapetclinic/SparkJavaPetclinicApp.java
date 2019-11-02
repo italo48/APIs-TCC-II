@@ -70,7 +70,6 @@ public class SparkJavaPetclinicApp {
 		
 //		Welcome
 		get("/", WelcomeController.welcomeEndPoint, gson::toJson);
-		get("/help/", WelcomeController.helpEndPoint, gson::toJson);
 
 //		Owner
 		post("/owner/saveOwner/", OwnerController.addOwnerEndPoint, gson::toJson);
