@@ -4,6 +4,8 @@ import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.put;
+import static spark.Spark.before;
+
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -14,6 +16,7 @@ import br.com.badcompany.sparkjavapetclinic.owner.OwnerController;
 import br.com.badcompany.sparkjavapetclinic.owner.OwnerRepository;
 import br.com.badcompany.sparkjavapetclinic.owner.PetController;
 import br.com.badcompany.sparkjavapetclinic.owner.PetRepository;
+import br.com.badcompany.sparkjavapetclinic.owner.PetValidator;
 import br.com.badcompany.sparkjavapetclinic.system.ErrorController;
 import br.com.badcompany.sparkjavapetclinic.system.WelcomeController;
 import br.com.badcompany.sparkjavapetclinic.util.Exclusion;
@@ -60,6 +63,11 @@ public class SparkJavaPetclinicApp {
 		port(8081);
 		
 //		Routes
+//		Validation
+		before("/pet/addPet/:idOwner/", PetValidator.Validate);
+		before("/pet/updatePet/:idOwner/", PetValidator.Validate);
+		
+		
 //		Welcome
 		get("/", WelcomeController.welcomeEndPoint, gson::toJson);
 		get("/help/", WelcomeController.helpEndPoint, gson::toJson);
