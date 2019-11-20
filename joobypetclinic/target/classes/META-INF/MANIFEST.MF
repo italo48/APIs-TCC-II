@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: joobypetclinic
+Implementation-Version: 1.0.0
+Built-By: italo
+Specification-Title: joobypetclinic
+Implementation-Vendor-Id: app
+Build-Jdk: 1.8.0_221
+Specification-Version: 1.0.0
+Created-By: Maven Integration for Eclipse
+

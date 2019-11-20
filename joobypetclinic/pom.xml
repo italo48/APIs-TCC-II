@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.jooby</groupId>
+		<artifactId>modules</artifactId>
+		<version>1.6.2</version>
+	</parent>
+
+	<artifactId>joobypetclinic</artifactId>
+	<groupId>app</groupId>
+	<version>1.0.0</version>
+
+	<name>joobypetclinic</name>
+
+	<properties>
+		<!-- Startup class -->
+		<application.class>br.com.badcompany.joobypetclinic.JoobyPetclinicApp</application.class>
+
+		<jooby.version>1.6.2</jooby.version>
+
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.parameters>true</maven.compiler.parameters>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<!-- Server -->
+		<dependency>
+			<groupId>org.jooby</groupId>
+			<artifactId>jooby-netty</artifactId>
+		</dependency>
+
+		<!-- JSON -->
+		<dependency>
+			<groupId>org.jooby</groupId>
+			<artifactId>jooby-gson</artifactId>
+			<version>${jooby.version}</version>
+		</dependency>
+		<!-- logging -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<!-- JPA -->
+		<dependency>
+			<groupId>org.jooby</groupId>
+			<artifactId>jooby-jdbc</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jooby</groupId>
+			<artifactId>jooby-hbm</artifactId>
+		</dependency>
+		<!-- db -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4-1201-jdbc41</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<!-- Build fat jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>
