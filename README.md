@@ -1,5 +1,5 @@
 # APIs-TCC-II
-Este repositório contem três APIs REST desenvolvidas como parte do Trabalho de Conclusão de Curso do dono do repo (Eu, kek).
+Este repositório contem três APIs REST desenvolvidas como parte do meu Trabalho de Conclusão de Curso.
 
 ## Sobre a aplicação Petclinic
 O Petclinic é uma aplicação pensada pelo pessoal da [Pivotal](https://pivotal.io/) para demostrar as
